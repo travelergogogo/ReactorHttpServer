@@ -2,7 +2,7 @@
 
 #include"net/Socket.h"
 #include"net/Epoll.h"
-
+#include"net/TcpConnection.h"
 
 #include<unordered_map>
 #include<memory>
@@ -19,5 +19,5 @@ private:
 
     Epoll epoll_;
     
-    std::unordered_map<int,std::shared_ptr<TcpConnection>>connections_;
+   std::unordered_map<int, std::shared_ptr<TcpConnection>> connections_;
 };

@@ -11,6 +11,9 @@ public:
 
     int wait(epoll_event *events,int maxEvents);
 
+    void delFd(int fd);
+
+    
 private:
     int epollfd_;
 };

@@ -8,7 +8,9 @@ TcpConnection(int fd);
 
 //void handle();
 
-void handleRead();
+bool handleRead();
+
+~TcpConnection();
 private:
 
 int fd_;

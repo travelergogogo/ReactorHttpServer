@@ -36,3 +36,13 @@ int Epoll::wait(epoll_event *events,int maxEvents)
 
   
 }
+
+void Epoll::delFd(int fd)
+{
+    int ret=epoll_ctl(epollfd_,EPOLL_CTL_DEL,fd,nullptr);
+    if(ret==-1)
+    {
+        perror("epoll_ctl(del)");
+    }
+    //不能关闭，我们只是告诉epoll不关注这个fd了close(fd);
+}
