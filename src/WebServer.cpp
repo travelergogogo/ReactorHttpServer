@@ -31,6 +31,10 @@ void WebServer::start()
             if(fd == socket_.fd())
             {
                 int clientfd =socket_.acceptClient();
+                if(clientfd==-1)
+                {
+                    continue;
+                }
                 auto conn =std::make_shared<TcpConnection>(clientfd);
 
                 connections_[clientfd]=conn;
@@ -49,7 +53,7 @@ void WebServer::start()
                 auto it=connections_.find(fd);
                 if(it!=connections_.end())
                 {
-                    //判断连接是否还在
+                    //判断这次 handleRead() 全部处理结束以后，这个 TcpConnection 还应该不应该继续存在。
                     bool alive=it->second->handleRead();
                     if(!alive)
                     {

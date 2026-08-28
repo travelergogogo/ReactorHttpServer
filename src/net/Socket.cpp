@@ -39,11 +39,32 @@ Socket::Socket(int port)
 //accept接收函数
 int Socket::acceptClient()
 {
+    
     //创建客户端地址结构，准备接收客户端IP和端口
     sockaddr_in clientAddr{};
     //长度
     socklen_t len=sizeof(clientAddr);
     int clientfd=accept(listenfd_,reinterpret_cast<sockaddr*>(&clientAddr),&len);
+    if(clientfd<0)
+    {
+
+        return -1;
+    }
+    int flags=fcntl(clientfd,F_GETFL,0);
+    if(flags==-1)
+    {
+        perror("fcntl");
+        //一定要close不然会泄露，因为fcntl失败了不close就导致没人再知道这个文件标识符了
+        close(clientfd);
+        return -1;
+    }
+    flags|=O_NONBLOCK;
+    if(fcntl(clientfd,F_SETFL,flags)==-1)
+    {
+        perror("fcntl(SET)");
+        close(clientfd);
+        return -1;
+    }
     return clientfd;
 }
 
